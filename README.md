@@ -21,6 +21,60 @@ A sophisticated payment processing system that leverages AI to handle payments, 
 
 ## System Architecture
 
+```mermaid
+graph TB
+    subgraph Client
+        UI[Web/Mobile Client]
+    end
+
+    subgraph ChatService
+        CS[Chat API Port 8001]
+        PA[Payment Agent]
+        LLM[OpenAI LLM]
+    end
+
+    subgraph APIService
+        API[FastAPI Service Port 8000]
+        BC[Bargaining Component]
+        CC[Crypto Analysis]
+    end
+
+    subgraph ExternalAPIs
+        CG[CoinGecko API]
+        PY[Payman API]
+        OP[OpenAI API]
+    end
+
+    subgraph Tools
+        PT[Payman Tools]
+        LC[LangChain]
+    end
+
+    UI --> CS
+    CS --> PA
+    PA --> LLM
+    PA --> PT
+    PA --> LC
+    LLM --> OP
+    PA --> API
+    API --> BC
+    API --> CC
+    CC --> CG
+    PT --> PY
+
+    classDef client fill:#00BFFF,stroke:#0066cc,color:white
+    classDef chat fill:#32CD32,stroke:#006600,color:white
+    classDef api fill:#FF4500,stroke:#8B0000,color:white
+    classDef external fill:#9932CC,stroke:#4B0082,color:white
+    classDef tools fill:#FFD700,stroke:#DAA520,color:black
+
+    class UI client
+    class CS,PA,LLM chat
+    class API,BC,CC api
+    class CG,PY,OP external
+    class PT,LC tools
+```
+
 The system consists of two main services:
 
 1. **Chat Service** (Port 8001):
